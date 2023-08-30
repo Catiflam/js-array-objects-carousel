@@ -1,4 +1,4 @@
-const images = [
+const slides = [
 	{
 		image: "img/01.webp",
 		title: "Marvel's Spiderman Miles Morale",
@@ -26,51 +26,48 @@ const images = [
 	},
 ];
 
-const carouselContainer = document.getElementById("carousel-container");
-const prevButton = document.getElementById("prev-button");
-const nextButton = document.getElementById("next-button");
+const slidesContainerElement = document.getElementById("slides-container");
+const thumbsContainerElement = document.getElementById("thumbnails-container");
 
-let activeImage = 0;
+let activeSlide = 0;
 
-let ImageHTML = "";
+slides.forEach((slide, index) => {
+	const slideElement = document.createElement("div");
+	slideElement.classList.add("slide");
 
-for (let i = 0; i < images.length; i++) {
-	const imageUrl = image[i];
+	if (index == activeSlide) slideElement.classList.add("active");
 
-	let active = i == activeImage ? "active" : "";
+	slideElement.innerHTML = `
+    <img src="./img/${slide.image}" alt="" />
+    <div class="slide-text">
+      <h2>${slide.title}</h2>
+      <p>${slide.text}</p>
+    </div>`;
 
-	imageHTML += `
-  <div class="slide ${active}">
-    <img src="${imageUrl}" alt="" />
-  </div>`;
-}
+	slide.HTMLnode = slideElement;
 
-carouselContainer.innerHTML = imageHTML;
+	if (index == activeSlide) slideElement.classList.add("active");
 
-nextButton.addEventListener("click", function () {
-	const allImageEl = document.querySelectorAll(".card");
+	slidesContainerElement.append(slideElement);
 
-	const activeImageEl = allImageEl[activeImage];
-	activeImageEl.classList.remove("active");
+	const nextButton = document.getElementById("go-next");
+	const prevButton = document.getElementById("go-prev");
 
-	activeImage++;
+	nextButton.addEventListener("click", goNext);
+	prevButton.addEventListener("click", goPrev);
 
-	if (activeImage >= allImageEl.length - 1) {
-		activeImage = 0;
+	function goNext() {
+		const oldSlide = slides[activeSlide].HTMLnode;
+		oldSlide.classList.remove("active");
+
+		activeSlide++;
+
+		const newSlide = slides[activeSlide].HTMLnode;
+		newSlide.classList.add("active");
 	}
 
-	const newActiveImage = allImageEl[activeImage];
-	newActiveImage.classList.add("active");
-});
-
-prevButton.addEventListener("click", function () {
-	const allImageEl = document.querySelector("card");
-
-	const activeImageEl = allImageEl[activeImage];
-	activeImageEl.classList.remove("active");
-
-	activeImage--;
-
-	const newActiveImage = allImageEl[activeImage];
-	newActiveImage.classList.add("active");
+	function goPrev() {
+		let prevIndex = activeSlide - 1;
+		if (prevIndex < 0) prevIndex = slides.length - 1;
+	}
 });
