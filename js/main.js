@@ -46,3 +46,31 @@ for (let i = 0; i < images.length; i++) {
 }
 
 carouselContainer.innerHTML = imageHTML;
+
+nextButton.addEventListener("click", function () {
+	const allImageEl = document.querySelectorAll(".card");
+
+	const activeImageEl = allImageEl[activeImage];
+	activeImageEl.classList.remove("active");
+
+	activeImage++;
+
+	if (activeImage >= allImageEl.length - 1) {
+		activeImage = 0;
+	}
+
+	const newActiveImage = allImageEl[activeImage];
+	newActiveImage.classList.add("active");
+});
+
+prevButton.addEventListener("click", function () {
+	const allImageEl = document.querySelector("card");
+
+	const activeImageEl = allImageEl[activeImage];
+	activeImageEl.classList.remove("active");
+
+	activeImage--;
+
+	const newActiveImage = allImageEl[activeImage];
+	newActiveImage.classList.add("active");
+});
